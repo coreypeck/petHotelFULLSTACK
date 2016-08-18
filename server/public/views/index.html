@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <title>Template</title>
+    <script type="text/javascript" src="./vendors/jquery.min.js"></script>
+    <script type="text/javascript" src="./vendors/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="./scripts/clientapp.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="./vendors/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="./styles/style.css">
+
+</head>
+
+<body>
+    <h1> PET HOTEL YEA</h1>
+    <div class="ownerRegistration">
+        <h1>Owner Registration</h1>
+        <form id="ownerReg">
+            <div class="form-group">
+                <label for="owner_firstname">First Name</label>
+                <input type="text" id="owner_firstname" name="owner_firstname" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="owner_lastname">Last Name:</label>
+                <input type="text" id="owner_lastname" name="owner_lastname" class="form-control" />
+            </div>
+            <button type="submit" id="submitOwner">Submit Owner</button>
+        </form>
+    </div>
+
+    <div class="petRegister">
+        <form id="registerPet">
+            <h1>Pets</h1>
+            <h4>Owner Name:</h4>
+            <select id="ownerName">
+                <option value="chooseOwner">Choose Owner</option>
+            </select>
+
+            <div class="form-group">
+                <label for="pet_name">Name:</label>
+                <input type="text" id="pet_name" name="pet_name" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="pet_breed">Breed:</label>
+                <input type="text" id="pet_breed" name="pet_breed" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="pet_color">Color:</label>
+                <input type="text" id="pet_color" name="pet_color" class="form-control" />
+            </div>
+            <button type="submit" id="submitOwner">Submit Pet</button>
+        </form>
+
+    </div>
+
+    <div id="dataTable"></div>
+</body>
+
+</html>
