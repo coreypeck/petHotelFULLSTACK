@@ -163,7 +163,7 @@ function registerPet() {
 
     });
 }
-//loads table from db
+//loads table from db YEA
 function getData() {
     $.ajax({
         type: 'GET',
