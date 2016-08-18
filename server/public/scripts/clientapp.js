@@ -8,6 +8,7 @@ $(document).ready(function() {
     $('#dataTable').on("click", ".update", updateData);
 });
 
+//functionality for delete button
 function deleteData() {
     var petToDelete = $(this).attr("id");
 
@@ -27,7 +28,7 @@ function deleteData() {
         }
     });
 }
-
+//updates specific data row if edited
 function updateData() {
     var pet = {};
     var inputs = $(this).parent().children().serializeArray();
@@ -54,7 +55,7 @@ function updateData() {
     });
 
 }
-
+//loads dropdown owner menu
 function getOwners() {
     var petOwners = [];
 
@@ -97,7 +98,7 @@ function getOwners() {
         }
     });
 }
-
+//toggle class function for checkin button
 function checkInOutButton() {
     $(this).toggleClass("checkedIn");
     if ($(this).attr("class") == "checkInOut checkedIn") {
@@ -106,7 +107,7 @@ function checkInOutButton() {
         $(this).text("Check In");
     }
 }
-
+//for submitting owner form
 function registerOwner() {
     event.preventDefault();
     var owner = {};
@@ -135,7 +136,7 @@ function registerOwner() {
 
 
 }
-
+//for submitting pet data
 function registerPet() {
     event.preventDefault();
     var pet = {};
@@ -162,7 +163,7 @@ function registerPet() {
 
     });
 }
-
+//loads table from db
 function getData() {
     $.ajax({
         type: 'GET',
