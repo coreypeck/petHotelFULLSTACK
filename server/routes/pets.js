@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var pg = require('pg');
-var connectionString = 'postgres://localhost:5432/mywork';
+var connectionString = 'postgres://localhost:5432/omicron';
 
 router.delete('/:id', function(req, res) {
     var id = req.params.id;
@@ -112,7 +112,6 @@ router.put('/:id', function(req, res) {
 
     pg.connect(connectionString, function(err, client, done) {
         if (err) {
-            console.log("error is here");
             res.sendStatus(500);
         }
         client.query('UPDATE pets SET pet_name = $1, pet_breed = $2, pet_color = $3 WHERE id = $4', [pet.pet_name, pet.pet_breed, pet.pet_color, id],
@@ -129,5 +128,70 @@ router.put('/:id', function(req, res) {
     });
 
 });
+router.post('/checkedpet', function(req, res){
+  var pet = req.body;
+  console.log("req", req.body);
+  console.log("pet", pet);
 
+  pg.connect(connectionString, function(err, client, done) {
+      if (err) {
+          res.sendStatus(500);
+      }
+
+      client.query('INSERT INTO visits (visit_pets) ' +
+          'VALUES ($1)', [pet.pet],
+          function(err, result) {
+              done();
+
+              if (err) {
+
+                  res.sendStatus(500);
+              } else {
+                  res.sendStatus(201);
+              }
+          });
+  });
+});
+router.put('/checkindate/:id', function(req,res){
+  var id = req.params.id;
+
+  var d = new Date();
+  var dateAdded = (d.getMonth() + 1) + '-' + (d.getDate()) + '-' + d.getFullYear();
+  pg.connect(connectionString, function(err, client, done){
+    if (err) {
+        res.sendStatus(500);
+    }
+    client.query('UPDATE visits SET visit_checkin = $1, visit_pets = $2', [dateAdded, id]),
+    function(err, result){
+      done();
+      if (err) {
+          res.sendStatus(500);
+          console.log("Error in pg.connect:", err);
+      } else {
+          res.sendStatus(200);
+      }
+    }
+  });
+});
+router.put('/checkoutdate/:id', function(req,res){
+  console.log('Checkout Date Works');
+  var id = req.params.id;
+  var d = new Date();
+  var dateAdded = (d.getMonth() + 1) + '-' + (d.getDate()) + '-' + d.getFullYear();
+  pg.connect(connectionString, function(err, client, done){
+    if (err) {
+        res.sendStatus(500);
+    }
+    client.query('UPDATE visits SET visit_checkout = $1, visit_pets = $2', [dateAdded, id]),
+    function(err, result){
+      done();
+      if (err) {
+          res.sendStatus(500);
+          console.log("Error in pg.connect:", err);
+      } else {
+          res.sendStatus(200);
+      }
+    }
+  });
+});
 module.exports = router;

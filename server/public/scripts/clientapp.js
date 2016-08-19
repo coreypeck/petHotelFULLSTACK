@@ -101,10 +101,13 @@ function getOwners() {
 //toggle class function for checkin button
 function checkInOutButton() {
     $(this).toggleClass("checkedIn");
+    var petID = $(this).parent().attr('id');
     if ($(this).attr("class") == "checkInOut checkedIn") {
         $(this).text("Check Out");
+        putVisitOut(petID);
     } else {
         $(this).text("Check In");
+        putVisitIn(petID);
     }
 }
 //for submitting owner form
@@ -115,25 +118,26 @@ function registerOwner() {
         owner[field.name] = field.value;
     });
     console.log("Owner:", owner);
+    if (owner.owner_lastname == "" || owner.owner_firstname == "") {
+        alert("Fool ya Fool tryin to enter a blank field");
+    } else {
+        $.ajax({
+            type: 'POST',
+            url: '/pets/owners',
+            data: owner,
+            success: function() {
+                console.log("owner was posted to db");
+                $('#dataTable').empty();
+                $('#ownerName').empty();
+                getData();
+                getOwners();
+            },
+            error: function() {
+                console.log('/POST didnt work');
+            }
 
-
-    $.ajax({
-        type: 'POST',
-        url: '/pets/owners',
-        data: owner,
-        success: function() {
-            console.log("owner was posted to db");
-            $('#dataTable').empty();
-            $('#ownerName').empty();
-            getData();
-            getOwners();
-        },
-        error: function() {
-            console.log('/POST didnt work');
-        }
-
-    });
-
+        });
+    }
 
 }
 //for submitting pet data
@@ -146,22 +150,24 @@ function registerPet() {
     });
     pet.pet_owner = selected;
     console.log("Pet:", pet);
+    if (pet.pet_name == "" || pet.pet_breed == "" || pet.pet_color == "") {
+        alert("Fool ya Fool tryin to enter a blank field");
+    } else {
+        $.ajax({
+            type: 'POST',
+            url: '/pets/petdetails',
+            data: pet,
+            success: function() {
+                $('#dataTable').empty();
+                getData();
 
+            },
+            error: function() {
+                console.log('/POST didnt work');
+            }
 
-    $.ajax({
-        type: 'POST',
-        url: '/pets/petdetails',
-        data: pet,
-        success: function() {
-            $('#dataTable').empty();
-            getData();
-
-        },
-        error: function() {
-            console.log('/POST didnt work');
-        }
-
-    });
+        });
+    }
 }
 //loads table from db YEA
 function getData() {
@@ -198,4 +204,50 @@ function getData() {
         },
     });
 
+}
+function putVisitIn(petID){
+  console.log(petID);
+  postVisting(petID);
+  $.ajax({
+      type: 'PUT',
+      url: '/pets/checkindate/' + petID,
+      data: petID,
+      success: function() {
+          console.log("owner was posted to db");
+      },
+      error: function() {
+          console.log('/POST didnt work');
+      }
+
+  });
+}
+function putVisitOut(petID){
+  console.log(petID);
+  postVisting(petID);
+  $.ajax({
+      type: 'PUT',
+      url: '/pets/checkoutdate/' + petID,
+      data: petID,
+      success: function() {
+          console.log("owner was posted to db");
+      },
+      error: function() {
+          console.log('/POST didnt work');
+      }
+
+  });
+}
+function postVisting(pet){
+  console.log(pet);
+  $.ajax({
+    type: 'POST',
+    url: '/pets/checkedpet',
+    data: pet,
+    success: function(){
+      console.log('Visiting Worked Fool!');
+    },
+    error: function(){
+      console.log('Visiting didnt work');
+    }
+  })
 }

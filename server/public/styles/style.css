@@ -5,3 +5,10 @@
 .checkedIn{
   text: "check out";
 }
+body {
+  margin-left: 30px;
+  margin-right: 30px;
+}
+h1 {
+  text-align: center;
+}
